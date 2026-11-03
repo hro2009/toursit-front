@@ -2,7 +2,6 @@ services:
   - type: web
     name: hayq-tours-preview
     runtime: static
-    plan: free
     branch: staging
     buildCommand: node scripts/build-preview.js
     staticPublishPath: dist
