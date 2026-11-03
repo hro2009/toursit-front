@@ -12,12 +12,17 @@
   <meta property="og:site_name" content="Hayq Armenia Tours">
   <meta name="theme-color" content="#0b2227">
   <link rel="canonical" href="/">
+  <script>
+    const base = document.createElement('base');
+    base.href = location.hostname === 'hro2009.github.io' ? '/toursit-front/' : '/';
+    document.head.append(base);
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Noto+Serif+Armenian:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=20261101-14">
-  <script src="/config.js"></script>
-  <script type="module" src="/script.js"></script>
+  <link rel="stylesheet" href="style.css?v=20261101-14">
+  <script src="config.js"></script>
+  <script type="module" src="script.js"></script>
 </head>
 <body>
   <header class="site-nav">

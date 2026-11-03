@@ -27,7 +27,7 @@ function serviceIconButtons(selected = 'map-pin') {
       <div class="icon-group-label">${escapeHtml(group)}</div>
       <div class="icon-grid">${icons.map(icon => `
         <button type="button" class="icon-option ${selected === icon.key ? 'selected' : ''}" data-icon-key="${icon.key}" title="${escapeHtml(icon.label)}" aria-label="${escapeHtml(icon.label)}">
-          <img src="/icons/${icon.key}.svg" alt="" width="24" height="24">
+          <img src="${window.hayqSiteUrl(`/icons/${icon.key}.svg`)}" alt="" width="24" height="24">
         </button>
       `).join('')}</div>
     </div>

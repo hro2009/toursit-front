@@ -57,7 +57,8 @@ export function renderTours() {
 export async function loadTours() {
   state.tours = await api(`/tours?lang=${state.language}`);
   renderTours();
-  const requestedSlug = decodeURIComponent(location.pathname.match(/^\/tours\/([^/]+)$/)?.[1] || '');
+  const pagePath = `/${location.pathname.slice(window.HAYQ_BASE_PATH.length)}`;
+  const requestedSlug = decodeURIComponent(pagePath.match(/^\/tours\/([^/]+)$/)?.[1] || '');
   const selected = state.tours.find(tour => tour.slug === requestedSlug);
   if (selected) openTour(selected.id);
 }
@@ -67,7 +68,7 @@ export async function loadServices() {
   state.services = await api(`/services?lang=${state.language}`);
   byId('servicesGrid').innerHTML = state.services.map(service => {
     const icon = getServiceIconOption(service.icon);
-    return `<div><div class="service-icon" aria-hidden="true"><img src="/icons/${escapeHtml(icon.key)}.svg" alt="" width="28" height="28"></div><h3>${escapeHtml(service.name)}</h3><p>${escapeHtml(service.description)}</p></div>`;
+    return `<div><div class="service-icon" aria-hidden="true"><img src="${escapeHtml(window.hayqSiteUrl(`/icons/${icon.key}.svg`))}" alt="" width="28" height="28"></div><h3>${escapeHtml(service.name)}</h3><p>${escapeHtml(service.description)}</p></div>`;
   }).join('');
 }
 

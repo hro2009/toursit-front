@@ -8,4 +8,6 @@ Before deploying, set `window.HAYQ_API_BASE_URL` in `config.js` to the API origi
 
 When developing with the combined app, leave the setting empty to use the current origin. Images uploaded in the admin are served from the API.
 
+The `main` branch deploys a static preview to GitHub Pages at `https://hro2009.github.io/toursit-front/`. GitHub Pages cannot run the Node.js backend; tours, booking, settings, and admin login require a separately deployed API. The workflow also publishes a static-route fallback for tour links.
+
 This repository contains no backend secrets or dependencies. Do not store `.env`, uploaded originals, or private data here.
