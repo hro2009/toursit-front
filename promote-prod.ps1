@@ -9,6 +9,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$dryRun = $WhatIfPreference
+$WhatIfPreference = $false
 $FrontendRepo = $PSScriptRoot
 if (-not $BackendRepo) {
   $BackendRepo = Join-Path (Split-Path -Parent $FrontendRepo) 'tourist-backend'
@@ -110,6 +112,11 @@ Write-Host 'Checking production branches can be fast-forwarded...'
 foreach ($repository in @($BackendRepo, $FrontendRepo)) {
   & git -C $repository push --dry-run origin 'staging:main'
   if ($LASTEXITCODE -ne 0) { throw "Production push check failed for $repository." }
+}
+
+if ($dryRun) {
+  Write-Host 'WhatIf: checks passed; no production branches were changed.'
+  return
 }
 
 if ($PSCmdlet.ShouldProcess('both production repositories', "Promote frontend $frontendCommit and backend $backendCommit")) {
