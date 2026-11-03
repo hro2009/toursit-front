@@ -1,3 +1,4 @@
+[CmdletBinding(SupportsShouldProcess)]
 param(
   [string]$BackendRepo = $env:HAYQ_BACKEND_REPO,
   [string]$PreviewSiteUrl = 'https://hayq-tours-preview.onrender.com',
@@ -111,11 +112,15 @@ foreach ($repository in @($BackendRepo, $FrontendRepo)) {
   if ($LASTEXITCODE -ne 0) { throw "Production push check failed for $repository." }
 }
 
-Write-Host "Promoting backend $backendCommit..."
-Invoke-Git $BackendRepo @('push', 'origin', 'staging:main') | Out-Null
-Write-Host "Promoting frontend $frontendCommit..."
-Invoke-Git $FrontendRepo @('push', 'origin', 'staging:main') | Out-Null
+if ($PSCmdlet.ShouldProcess('both production repositories', "Promote frontend $frontendCommit and backend $backendCommit")) {
+  Write-Host "Promoting backend $backendCommit..."
+  Invoke-Git $BackendRepo @('push', 'origin', 'staging:main') | Out-Null
+  Write-Host "Promoting frontend $frontendCommit..."
+  Invoke-Git $FrontendRepo @('push', 'origin', 'staging:main') | Out-Null
 
-Wait-ForCommit "$($ProductionSiteUrl.TrimEnd('/'))/version.json" 'commit' $frontendCommit 'Production website'
-Wait-ForCommit "$($ProductionApiUrl.TrimEnd('/'))/api/health" 'commit' $backendCommit 'Production API'
-Write-Host 'Promotion complete: production is running the exact commits verified on staging.'
+  Wait-ForCommit "$($ProductionSiteUrl.TrimEnd('/'))/version.json" 'commit' $frontendCommit 'Production website'
+  Wait-ForCommit "$($ProductionApiUrl.TrimEnd('/'))/api/health" 'commit' $backendCommit 'Production API'
+  Write-Host 'Promotion complete: production is running the exact commits verified on staging.'
+} else {
+  Write-Host 'WhatIf: checks passed; no production branches were changed.'
+}
