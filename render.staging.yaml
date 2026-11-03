@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: hayq-tours-preview
+    runtime: static
+    branch: staging
+    buildCommand: node scripts/build-preview.js
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /tours/*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Robots-Tag
+        value: noindex, nofollow
